@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Rating Prediction</title>
+</head>
+<body>
+    <h1>Predict Movie Rating</h1>
+    <form id="predictionForm">
+        <label for="genre">Genre:</label><br>
+        <input type="text" id="genre" name="genre"><br>
+        <label for="director">Director:</label><br>
+        <input type="text" id="director" name="director"><br>
+        <label for="actors">Actors:</label><br>
+        <input type="text" id="actors" name="actors"><br><br>
+        <input type="button" value="Predict" onclick="makePrediction()">
+    </form>
+    <p id="result"></p>
+
+    <script>
+        function makePrediction() {
+            const form = document.getElementById('predictionForm');
+            const data = {
+                Genre: form.genre.value,
+                Director: form.director.value,
+                Actors: form.actors.value
+            };
+
+            fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = 'Predicted Rating: ' + data.prediction;
+            });
+        }
+    </script>
+</body>
+</html>
